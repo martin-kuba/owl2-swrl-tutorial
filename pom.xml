@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>cz.muni.ics.makub</groupId>
+    <artifactId>owltutorial</artifactId>
+    <version>1.1</version>
+
+    <developers>
+        <developer>
+            <name>Martin Kuba</name>
+            <email>makub@ics.muni.cz</email>
+            <url>http://www.muni.cz/people/3988</url>
+            <organization>Institute of Computer Science, Masaryk University, Brno, Czech Republic</organization>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+
+    <repositories>
+        <repository>
+            <id>code.berkeleybop.org</id>
+            <name>Maven Repository</name>
+            <url>http://code.berkeleybop.org/maven/repository/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- Pellet2.3.6 hangs, but pellet-query is needed -->
+        <dependency>
+            <groupId>com.github.ansell.pellet</groupId>
+            <artifactId>pellet-query</artifactId>
+            <version>2.3.6-ansell</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.ansell.pellet</groupId>
+                    <artifactId>pellet-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>pellet</groupId>
+            <artifactId>pellet-core</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>pellet</groupId>
+            <artifactId>pellet-datatypes</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>pellet</groupId>
+            <artifactId>pellet-el</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>pellet</groupId>
+            <artifactId>pellet-rules</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>pellet</groupId>
+            <artifactId>pellet-owlapiv3</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr-runtime</artifactId>
+            <version>3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>aterm</groupId>
+            <artifactId>aterm</artifactId>
+            <version>1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.relaxng</groupId>
+            <artifactId>relaxngDatatype</artifactId>
+            <version>2011.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jgrapht</groupId>
+            <artifactId>jgrapht-jdk1.5</artifactId>
+            <version>0.7.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sourceforge.owlapi</groupId>
+            <artifactId>owlapi-distribution</artifactId>
+            <version>3.4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <!-- Java language version -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <source>7</source>
+                    <target>7</target>
+                </configuration>
+            </plugin>
+            <!-- run using "mvn exec:java" -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <mainClass>cz.makub.Tutorial</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <links>
+                        <link>http://owlapi.sourceforge.net/javadoc/</link>
+                    </links>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
