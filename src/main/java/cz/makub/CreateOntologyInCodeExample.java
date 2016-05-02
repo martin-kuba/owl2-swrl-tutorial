@@ -10,11 +10,13 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 import uk.ac.manchester.cs.owlapi.dlsyntax.DLSyntaxObjectRenderer;
 
 import java.io.File;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Example how to create an ontology in Java code using OWL API.
@@ -55,7 +57,7 @@ public class CreateOntologyInCodeExample {
         //annotated subclass axiom
         OWLAnnotationProperty annotationProperty = factory.getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_COMMENT.getIRI());
         OWLAnnotationValue value = factory.getOWLLiteral("States that every man is a person.");
-        OWLAnnotation annotation =  factory.getOWLAnnotation(annotationProperty,value);
+        OWLAnnotation annotation = factory.getOWLAnnotation(annotationProperty, value);
         OWLSubClassOfAxiom subClassOfAxiom = factory.getOWLSubClassOfAxiom(manClass, personClass, Collections.singleton(annotation));
         manager.addAxiom(ontology, subClassOfAxiom);
 
@@ -77,16 +79,15 @@ public class CreateOntologyInCodeExample {
         manager.addAxiom(ontology, factory.getOWLEquivalentClassesAxiom(englishProgrammerClass, andExpr));
 
 
-        //SWRL rule - Person(?x),speaksLanguage(?x,English),hasKnowledgeOf(?x,Computer-Programming)->englishProgrammersClass(?x)
+        //SWRL rule - Person(?x),speaksLanguage(?x,English),hasKnowledgeOf(?x,Computer-Programming)->englishProgrammer(?x)
         SWRLVariable varX = factory.getSWRLVariable(pm.getIRI("var:x"));
-        Set<SWRLAtom> body = new HashSet<>();
-        body.add(factory.getSWRLClassAtom(personClass,varX));
-        body.add(factory.getSWRLObjectPropertyAtom(speaksLanguageProperty,varX,factory.getSWRLIndividualArgument(english)));
-        body.add(factory.getSWRLObjectPropertyAtom(hasKnowledgeOfProperty,varX,factory.getSWRLIndividualArgument(comp)));
-        Set<SWRLAtom> head = new HashSet<>();
-        head.add(factory.getSWRLClassAtom(englishProgrammerClass, varX));
-        SWRLRule swrlRule = factory.getSWRLRule(body,head);
-        manager.addAxiom(ontology,swrlRule);
+        Set<SWRLAtom> body = new LinkedHashSet<>();
+        body.add(factory.getSWRLClassAtom(personClass, varX));
+        body.add(factory.getSWRLObjectPropertyAtom(speaksLanguageProperty, varX, factory.getSWRLIndividualArgument(english)));
+        body.add(factory.getSWRLObjectPropertyAtom(hasKnowledgeOfProperty, varX, factory.getSWRLIndividualArgument(comp)));
+        Set<? extends SWRLAtom> head = Collections.singleton(factory.getSWRLClassAtom(englishProgrammerClass, varX));
+        SWRLRule swrlRule = factory.getSWRLRule(body, head);
+        manager.addAxiom(ontology, swrlRule);
 
         //save  to a file
         OWLFunctionalSyntaxOntologyFormat ontologyFormat = new OWLFunctionalSyntaxOntologyFormat();
