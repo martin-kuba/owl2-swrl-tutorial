@@ -1,28 +1,31 @@
 package cz.makub;
 
-import cz.makub.swrl.CustomSWRLBuiltin;
 import com.clarkparsia.pellet.owlapiv3.PelletReasonerFactory;
 import com.clarkparsia.pellet.rules.builtins.BuiltInRegistry;
+import com.google.common.collect.Multimap;
+import cz.makub.swrl.CustomSWRLBuiltin;
 import org.mindswap.pellet.ABox;
 import org.mindswap.pellet.Node;
 import org.mindswap.pellet.utils.ATermUtils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.dlsyntax.renderer.DLSyntaxObjectRenderer;
+import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 import org.semanticweb.owlapi.io.OWLObjectRenderer;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
-import uk.ac.manchester.cs.owlapi.dlsyntax.DLSyntaxObjectRenderer;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.Collection;
 
+import static cz.makub.SWRLBuiltInsTutorial.listAllDataPropertyValues;
 import static org.mindswap.pellet.utils.Namespaces.XSD;
 
 /**
  * Example of a Pellet SWRL built-in that works with both Individuals and data literals.
- *
+ * <p>
  * Run in Maven with <code>mvn exec:java -Dexec.mainClass=cz.makub.IndividualSWRLBuiltinTutorial</code>
  *
  * @author Martin Kuba makub@ics.muni.cz
@@ -32,7 +35,7 @@ public class IndividualSWRLBuiltinTutorial {
     /**
      * The built-in implementation.
      */
-    public static class IRIparts implements CustomSWRLBuiltin.CustomSWRLFunction {
+    private static class IRIparts implements CustomSWRLBuiltin.CustomSWRLFunction {
 
         @Override
         public boolean isApplicable(boolean[] boundPositions) {
@@ -72,31 +75,21 @@ public class IndividualSWRLBuiltinTutorial {
         OWLReasonerFactory reasonerFactory = PelletReasonerFactory.getInstance();
         OWLReasoner reasoner = reasonerFactory.createReasoner(ontology, new SimpleConfiguration());
         OWLDataFactory factory = manager.getOWLDataFactory();
-        PrefixOWLOntologyFormat pm = (PrefixOWLOntologyFormat) manager.getOntologyFormat(ontology);
+        PrefixDocumentFormat pm = manager.getOntologyFormat(ontology).asPrefixOWLOntologyFormat();
         //print the SWRL rule
-        listSWRLRules(ontology, pm);
+        listSWRLRules(ontology);
         //use the rule with the built-in to infer property values
         OWLNamedIndividual martin = factory.getOWLNamedIndividual(":Martin", pm);
         listAllDataPropertyValues(martin, ontology, reasoner);
     }
 
-    public static void listSWRLRules(OWLOntology ontology, PrefixOWLOntologyFormat pm) {
+    private static void listSWRLRules(OWLOntology ontology) {
         OWLObjectRenderer renderer = new DLSyntaxObjectRenderer();
         for (SWRLRule rule : ontology.getAxioms(AxiomType.SWRL_RULE)) {
             System.out.println(renderer.render(rule));
         }
     }
 
-    public static void listAllDataPropertyValues(OWLNamedIndividual individual, OWLOntology ontology, OWLReasoner reasoner) {
-        OWLObjectRenderer renderer = new DLSyntaxObjectRenderer();
-        Map<OWLDataPropertyExpression, Set<OWLLiteral>> assertedValues = individual.getDataPropertyValues(ontology);
-        for (OWLDataProperty dataProp : ontology.getDataPropertiesInSignature(true)) {
-            for (OWLLiteral literal : reasoner.getDataPropertyValues(individual, dataProp)) {
-                Set<OWLLiteral> literalSet = assertedValues.get(dataProp);
-                boolean asserted = (literalSet != null && literalSet.contains(literal));
-                System.out.println((asserted ? "asserted" : "inferred") + " data property for " + renderer.render(individual) + " : "
-                        + renderer.render(dataProp) + " -> " + renderer.render(literal));
-            }
-        }
-    }
+
+
 }

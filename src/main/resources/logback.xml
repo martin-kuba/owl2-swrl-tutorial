@@ -1,0 +1,17 @@
+<!-- Logback logging framework configuration -->
+<configuration>
+    <appender name="APP" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="cz.makub" level="debug"/>
+    <logger name="org.semanticweb.owlapi.util.SAXParsers" level="error"/>
+    <logger name="com.clarkparsia.owlapi.explanation.BlackBoxExplanation" level="warn"/>
+
+    <root level="info">
+        <appender-ref ref="APP"/>
+    </root>
+
+</configuration>

@@ -6,7 +6,7 @@
 
     <groupId>cz.muni.ics.makub</groupId>
     <artifactId>owltutorial</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
 
     <developers>
         <developer>
@@ -48,6 +48,14 @@
                 <exclusion>
                     <groupId>com.github.ansell.pellet</groupId>
                     <artifactId>pellet-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -101,12 +109,13 @@
         <dependency>
             <groupId>net.sourceforge.owlapi</groupId>
             <artifactId>owlapi-distribution</artifactId>
-            <version>3.4.3</version>
+            <version>4.2.3</version>
         </dependency>
+
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.2</version>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.3</version>
         </dependency>
     </dependencies>
     <build>
