@@ -6,7 +6,7 @@
 
     <groupId>cz.muni.ics.makub</groupId>
     <artifactId>owltutorial</artifactId>
-    <version>1.2</version>
+    <version>1.2.1</version>
 
     <developers>
         <developer>
@@ -119,6 +119,7 @@
         </dependency>
     </dependencies>
     <build>
+        <defaultGoal>compile exec:java</defaultGoal>
         <plugins>
             <!-- Java language version -->
             <plugin>
