@@ -6,7 +6,7 @@
 
     <groupId>cz.muni.ics.makub</groupId>
     <artifactId>owltutorial</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
 
     <developers>
         <developer>
@@ -25,9 +25,9 @@
 
     <repositories>
         <repository>
-            <id>code.berkeleybop.org</id>
+            <id>acrab.ics.muni.cz</id>
             <name>Maven Repository</name>
-            <url>http://code.berkeleybop.org/maven/repository/</url>
+            <url>http://acrab.ics.muni.cz/~makub/m2repo/</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>
