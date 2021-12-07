@@ -6,7 +6,7 @@
 
     <groupId>cz.muni.ics.makub</groupId>
     <artifactId>owltutorial</artifactId>
-    <version>1.2.2</version>
+    <version>1.3.0</version>
 
     <developers>
         <developer>
@@ -27,7 +27,7 @@
         <repository>
             <id>acrab.ics.muni.cz</id>
             <name>Maven Repository</name>
-            <url>http://acrab.ics.muni.cz/~makub/m2repo/</url>
+            <url>https://acrab.ics.muni.cz/~makub/m2repo/</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>
@@ -115,31 +115,47 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.1.3</version>
+            <version>1.2.7</version>
         </dependency>
     </dependencies>
     <build>
-        <defaultGoal>compile exec:java</defaultGoal>
+        <!-- just run the command "mvn" to compile and run -->
+        <defaultGoal>compile exec:exec</defaultGoal>
+
         <plugins>
-            <!-- Java language version -->
+            <!-- compilation for Java 17-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.2</version>
+                <version>3.8.1</version>
                 <configuration>
-                    <source>7</source>
-                    <target>7</target>
+                    <source>17</source>
+                    <target>17</target>
+                    <fork>true</fork>
+                    <compilerArgs>
+                        <arg>--add-opens</arg>
+                        <arg>java.base/java.lang=ALL-UNNAMED</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
-            <!-- run using "mvn exec:java" -->
+
+            <!-- run using "mvn exec:exec" -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.2.1</version>
+                <version>3.0.0</version>
                 <configuration>
-                    <mainClass>cz.makub.Tutorial</mainClass>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>--add-opens</argument>
+                        <argument>java.base/java.lang=ALL-UNNAMED</argument>
+                        <argument>-classpath</argument>
+                        <classpath/>
+                        <argument>cz.makub.Tutorial</argument>
+                    </arguments>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
